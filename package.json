@@ -1,0 +1,12 @@
+{
+  "name": "gold-vergleich",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "scrape": "node scraper/scrape.mjs",
+    "test": "node --test scraper/*.test.mjs"
+  },
+  "dependencies": {
+    "playwright-core": "1.56.1"
+  }
+}

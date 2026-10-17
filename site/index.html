@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="de-AT">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#16130d">
+  <title>Goldpreise Salzburg</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icon-180.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Goldpreise">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="top">
+    <div class="wrap">
+      <div class="title">
+        <h1>Goldpreise <span>Salzburg</span></h1>
+        <p id="updated" class="muted">Lade Preise …</p>
+      </div>
+      <button id="reload" class="icon-btn" aria-label="Neu laden" title="Neu laden">
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M12 4a8 8 0 0 1 7.75 6h-2.1A6 6 0 1 0 18 14h2.1A8 8 0 1 1 12 4Zm5-1 4 4-4 4V3Z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="controls" aria-label="Ansicht">
+      <div class="seg" role="radiogroup" aria-label="Was möchtest du?">
+        <button role="radio" data-side="buy" aria-checked="true">Ich kaufe</button>
+        <button role="radio" data-side="sell" aria-checked="false">Ich verkaufe</button>
+      </div>
+      <div class="chips" role="radiogroup" aria-label="Produkte">
+        <button role="radio" data-group="Münzen" aria-checked="false">Münzen</button>
+        <button role="radio" data-group="Barren" aria-checked="true">Barren</button>
+        <button role="radio" data-group="Feingold" aria-checked="false">Feingold</button>
+      </div>
+    </section>
+
+    <section id="spot" class="spot" hidden></section>
+
+    <section class="card chart-card">
+      <div class="chart-head">
+        <h2>Preisverlauf</h2>
+        <div class="chart-controls">
+          <select id="chart-product" aria-label="Produkt"></select>
+          <div class="chips small" id="chart-range" role="radiogroup" aria-label="Zeitraum">
+            <button role="radio" data-days="1" aria-checked="false">1 T</button>
+            <button role="radio" data-days="7" aria-checked="false">7 T</button>
+            <button role="radio" data-days="30" aria-checked="true">30 T</button>
+            <button role="radio" data-days="365" aria-checked="false">1 J</button>
+            <button role="radio" data-days="0" aria-checked="false">Alles</button>
+          </div>
+        </div>
+      </div>
+      <div class="chart-box"><canvas id="chart"></canvas></div>
+      <p id="chart-empty" class="muted small-text" hidden>Noch zu wenige Daten. Der Verlauf füllt sich mit jedem Abruf alle 30 Minuten.</p>
+    </section>
+
+    <section id="list" class="list" aria-live="polite"></section>
+
+    <section class="card">
+      <h2>Händler</h2>
+      <ul id="dealers" class="dealers"></ul>
+    </section>
+
+    <footer class="muted small-text">
+      Preise werden alle 30 Minuten von den Webseiten der Händler abgerufen. Angaben ohne Gewähr, verbindlich ist nur der Preis beim Händler.
+      „Ich kaufe“ zeigt, was du zahlst. „Ich verkaufe“ zeigt, was du bekommst.
+    </footer>
+  </main>
+
+  <script src="vendor/chart.umd.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
