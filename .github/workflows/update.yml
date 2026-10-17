@@ -1,10 +1,11 @@
 name: Preise abrufen und Seite veröffentlichen
 
+# Automatischer Abruf ist pausiert. Zum Aktivieren wieder einfügen:
+#   schedule:
+#     - cron: '7,37 * * * *'
+#   push:
+#     branches: [main]
 on:
-  schedule:
-    - cron: '7,37 * * * *'
-  push:
-    branches: [main]
   workflow_dispatch:
     inputs:
       dump:
