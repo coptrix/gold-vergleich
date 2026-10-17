@@ -1,6 +1,7 @@
 // Händler und ihre Preisseiten.
 // single: was ein einzelner Preis in einer Zeile bedeutet ('buy' = du kaufst, 'sell' = du verkaufst).
 // Zeilen mit zwei Preisen: der niedrigere ist immer der Ankauf (du verkaufst), der höhere der Verkauf (du kaufst).
+// allowed: erst auf true setzen, wenn der Händler dem Abruf zugestimmt hat. Nur diese Händler werden abgerufen.
 
 export const DEALERS = [
   {
@@ -10,6 +11,7 @@ export const DEALERS = [
     url: 'https://www.oegussa.at/de/charts/tageskurse',
     pages: ['https://www.oegussa.at/de/charts/tageskurse'],
     single: 'buy',
+    allowed: false,
   },
   {
     id: 'philoro',
@@ -18,6 +20,7 @@ export const DEALERS = [
     url: 'https://philoro.at/preisliste/alle',
     pages: ['https://philoro.at/preisliste/alle'],
     single: 'buy',
+    allowed: false,
   },
   {
     id: 'alpengold',
@@ -31,6 +34,7 @@ export const DEALERS = [
     single: 'buy',
     // Auf der Ankauf-Seite bedeutet ein einzelner Preis "du verkaufst".
     singleByPage: { 'alpen-gold-ankauf.at': 'sell' },
+    allowed: false,
   },
   {
     id: 'kornmesser',
@@ -40,5 +44,6 @@ export const DEALERS = [
     pages: ['https://www.kornmesser-goldankauf.at/'],
     single: 'sell',
     note: 'kauft nur an',
+    allowed: false,
   },
 ];

@@ -17,10 +17,40 @@ async function launch() {
   return chromium.launch({ executablePath, channel: executablePath ? undefined : 'chrome' });
 }
 
+// Prüft, ob die robots.txt des Händlers den Abruf dieser Seite erlaubt.
+async function robotsAllow(url) {
+  const u = new URL(url);
+  let text;
+  try {
+    const res = await fetch(`${u.origin}/robots.txt`, { signal: AbortSignal.timeout(15000) });
+    if (res.status >= 400 && res.status < 500) return true;
+    if (!res.ok) return false;
+    text = await res.text();
+  } catch {
+    return false;
+  }
+  let applies = false;
+  let longest = { len: -1, allow: true };
+  for (const raw of text.split('\n')) {
+    const line = raw.replace(/#.*/, '').trim();
+    const [field, ...rest] = line.split(':');
+    const value = rest.join(':').trim();
+    if (/^user-agent$/i.test(field)) applies = value === '*';
+    else if (applies && /^(dis)?allow$/i.test(field) && value && u.pathname.startsWith(value) && value.length > longest.len) {
+      longest = { len: value.length, allow: /^allow$/i.test(field) };
+    }
+  }
+  return longest.allow;
+}
+
 async function scrapeDealer(browser, dealer) {
   const products = {};
   const errors = [];
   for (const url of dealer.pages) {
+    if (!(await robotsAllow(url))) {
+      errors.push(`${url}: laut robots.txt nicht erlaubt`);
+      continue;
+    }
     const page = await browser.newPage({
       locale: 'de-AT',
       userAgent:
@@ -78,11 +108,15 @@ function vienna(d) {
 }
 
 async function main() {
+  if (!DEALERS.some((d) => d.allowed)) {
+    console.log('Noch kein Händler freigegeben, es wird nichts abgerufen.');
+    return;
+  }
   const browser = await launch();
   const now = new Date();
   const previous = await readJson(path.join(DATA, 'latest.json'), { dealers: [] });
   const dealers = [];
-  for (const d of DEALERS) {
+  for (const d of DEALERS.filter((x) => x.allowed)) {
     const result = await scrapeDealer(browser, d);
     // Fällt ein Händler aus, bleiben seine letzten Preise mit altem Zeitstempel stehen.
     const old = previous.dealers.find((x) => x.id === d.id);

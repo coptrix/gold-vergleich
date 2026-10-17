@@ -57,7 +57,7 @@ function render() {
 
   if (!L) {
     $('#updated').textContent = 'Noch keine Preise vorhanden';
-    $('#list').innerHTML = '<div class="card empty muted">Der erste Abruf läuft noch. Schau in ein paar Minuten wieder vorbei.</div>';
+    $('#list').innerHTML = '<div class="card empty muted">Noch keine Preise. Sobald ein Händler freigegeben ist, erscheinen sie hier nach dem nächsten Abruf.</div>';
     renderChart();
     return;
   }
